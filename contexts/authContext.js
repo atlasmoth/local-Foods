@@ -5,7 +5,7 @@ const AuthContext = createContext();
 function reducer(state, action) {
   switch (action.type) {
     case "login": {
-      return { ...state };
+      return { ...state, auth: true, user: action.user };
     }
     case "logout": {
       return { ...state, auth: false, user: null };
