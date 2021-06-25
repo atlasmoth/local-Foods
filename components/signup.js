@@ -10,9 +10,9 @@ export default function login() {
     e.preventDefault();
     axios
       .post("/api/create", { ...state })
-      .then((user) => {
-        console.log(user);
-        // context.dispatch({ type: "login", user });
+      .then((data) => {
+        const { user } = data;
+        context.dispatch({ type: "login", user });
       })
       .catch(console.log);
   }

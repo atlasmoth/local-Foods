@@ -6,7 +6,19 @@ import { useAuth } from "./../contexts/authContext";
 export default function login() {
   const [state, updateState] = useForm({ email: "", password: "" });
   const context = useAuth();
-
+  function handleSubmit(e) {
+    e.preventDefault();
+    axios
+      .post("/api/login", { ...state })
+      .then((res) => {
+        const {
+          data: { user },
+        } = res;
+        console.log(user);
+        context.dispatch({ type: "login", user });
+      })
+      .catch(console.log);
+  }
   return (
     <div className="signup-container">
       <form onSubmit={handleSubmit}>

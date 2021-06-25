@@ -5,14 +5,17 @@ import { connectToDatabase } from "../../utils/db";
 import cookie from "cookie";
 
 const handler = nc();
-async function createUser(req, res) {
+async function login(req, res) {
   const { password, email } = req.body;
-  const hash = bcrypt.hashSync(password, 10);
+
   try {
     const { db } = await connectToDatabase();
-    const user = await db
-      .collection("users")
-      .insertOne({ email, passsword: hash });
+    const user = await db.collection("users").findOne({ email });
+
+    if (!user || !bcrypt.compareSync(password, user.passsword)) {
+      throw new Error("Invalid Credentials son");
+    }
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     res.setHeader(
       "Set-Cookie",
@@ -23,11 +26,12 @@ async function createUser(req, res) {
         sameSite: "strict",
       })
     );
-    res.send({ success: true, user });
+
+    res.send({ success: true, user: { _id: user._id, email: user.email } });
   } catch (error) {
     console.log(error);
     res.status(400).send({ success: false, message: error.message });
   }
 }
-handler.post(createUser);
+handler.post(login);
 export default handler;
