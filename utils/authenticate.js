@@ -9,9 +9,9 @@ export default async function auhtenticate(obj = {}) {
       );
       try {
         // Authenticate the user
+        console.log("We are hitting this chale");
         const user = await app.logIn(credentials);
-        // `App.currentUser` updates to match the logged in user
-        assert(user.id === app.currentUser.id);
+
         return user;
       } catch (err) {
         console.error("Failed to log in", err);
@@ -55,3 +55,5 @@ export default async function auhtenticate(obj = {}) {
     }
   }
 }
+
+// { "user_rating": { "$exists": true} }

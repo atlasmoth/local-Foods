@@ -1,12 +1,18 @@
 import useForm from "../hooks/useForm";
 import Link from "next/link";
 import authenticate from "./../utils/authenticate";
+import { useAuth } from "./../contexts/authContext";
 
 export default function login() {
   const [state, updateState] = useForm({ email: "", password: "" });
+  const context = useAuth();
   function handleSubmit(e) {
     e.preventDefault();
-    authenticate({ type: "google", ...state }).catch(console.log);
+    authenticate({ type: "email", ...state })
+      .then((user) => {
+        context.dispatch({ type: "login", user });
+      })
+      .catch(console.log);
   }
   return (
     <div className="signup-container">
