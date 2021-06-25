@@ -4,8 +4,7 @@ export default function UserApp({ items }) {
   return (
     <div className="box">
       <Search />
-      <Tray items={items} />
-      <h3>Testing out sth</h3>
+      <Tray items={items} title="Restaurants near you" />
     </div>
   );
 }
