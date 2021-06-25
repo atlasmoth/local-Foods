@@ -1,4 +1,5 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -17,6 +18,18 @@ function reducer(state, action) {
 }
 function Auth({ children }) {
   const [state, dispatch] = useReducer(reducer, { user: null, auth: false });
+  useEffect(() => {
+    axios
+      .post("/api/create", {})
+      .then((res) => {
+        const {
+          data: { user },
+        } = res;
+
+        dispatch({ type: "login", user });
+      })
+      .catch(console.log);
+  }, []);
   return (
     <AuthContext.Provider value={{ state, dispatch }}>
       {children}
