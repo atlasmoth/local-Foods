@@ -1,6 +1,6 @@
 import useForm from "../hooks/useForm";
 import Link from "next/link";
-import authenticate from "./../utils/authenticate";
+
 import { useAuth } from "./../contexts/authContext";
 
 export default function login() {
@@ -8,7 +8,7 @@ export default function login() {
   const context = useAuth();
   function handleSubmit(e) {
     e.preventDefault();
-    authenticate({ type: "email", ...state })
+    fetch()
       .then((user) => {
         context.dispatch({ type: "login", user });
       })
