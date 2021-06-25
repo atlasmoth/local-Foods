@@ -1,19 +1,12 @@
 import useForm from "../hooks/useForm";
 import Link from "next/link";
-
+import axios from "axios";
 import { useAuth } from "./../contexts/authContext";
 
 export default function login() {
   const [state, updateState] = useForm({ email: "", password: "" });
   const context = useAuth();
-  function handleSubmit(e) {
-    e.preventDefault();
-    fetch()
-      .then((user) => {
-        context.dispatch({ type: "login", user });
-      })
-      .catch(console.log);
-  }
+
   return (
     <div className="signup-container">
       <form onSubmit={handleSubmit}>
