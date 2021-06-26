@@ -9,7 +9,7 @@ export default function Tray({ items, title }) {
         }}
       >
         {items.map((i) => (
-          <div className="item-tray" key={i?._id["$oid"]}>
+          <div className="item-tray" key={i?._id}>
             <div className="tray-img">
               <img src={i?.featured_image} alt="featured" />
             </div>
