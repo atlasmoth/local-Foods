@@ -6,6 +6,7 @@ const AuthContext = createContext();
 function reducer(state, action) {
   switch (action.type) {
     case "login": {
+      document.cookie = `foodsUser=${JSON.stringify(action.user)}`;
       return { ...state, auth: true, user: action.user };
     }
     case "logout": {

@@ -2,10 +2,16 @@ import Search from "./../components/search";
 import Tray from "./../components/tray";
 import { connectToDatabase } from "./../utils/db";
 import Cookie from "next-cookies";
+// import { ObjectId } from "mongodb";
+import { useEffect } from "react";
+import { ObjectId } from "mongodb";
 
-export default function UserApp({ items }) {
+export default function UserApp({ items, orders }) {
+  console.log(orders);
   const [data] = items;
-
+  useEffect(() => {
+    console.log(data);
+  }, []);
   return (
     <div className="box">
       <Search />
@@ -16,7 +22,7 @@ export default function UserApp({ items }) {
 
 export async function getServerSideProps(ctx) {
   const { foodsUser } = Cookie(ctx);
-  console.log(foodsUser);
+
   try {
     const { db } = await connectToDatabase();
     const docs = await db
@@ -59,10 +65,17 @@ export async function getServerSideProps(ctx) {
         },
       ])
       .toArray();
-
+    const orders = await db.collection("orders").aggregate([
+      {
+        $match: {
+          creator: ObjectId(foodsUser._id),
+        },
+      },
+    ]);
     return {
       props: {
         items: JSON.parse(JSON.stringify(docs)),
+        orders,
       },
     };
   } catch (error) {
