@@ -2,9 +2,10 @@ import Search from "./../components/search";
 import Tray from "./../components/tray";
 import { connectToDatabase } from "./../utils/db";
 import Cookie from "next-cookies";
-// import { ObjectId } from "mongodb";
 import { useEffect } from "react";
 import { ObjectId } from "mongodb";
+import Nav from "./../components/navbar";
+import Bottom from "./../components/bottom";
 
 export default function UserApp({ items, orders }) {
   console.log(orders);
@@ -14,8 +15,12 @@ export default function UserApp({ items, orders }) {
   }, []);
   return (
     <div className="box">
+      <Nav />
       <Search />
       <Tray items={[]} title="Restaurants near you" />
+      <Tray items={[]} title="Highest rated" />
+
+      <Bottom />
     </div>
   );
 }
@@ -65,17 +70,20 @@ export async function getServerSideProps(ctx) {
         },
       ])
       .toArray();
-    const orders = await db.collection("orders").aggregate([
-      {
-        $match: {
-          creator: ObjectId(foodsUser._id),
+    const orders = await db
+      .collection("orders")
+      .aggregate([
+        {
+          $match: {
+            creator: ObjectId(foodsUser._id),
+          },
         },
-      },
-    ]);
+      ])
+      .toArray();
     return {
       props: {
         items: JSON.parse(JSON.stringify(docs)),
-        orders,
+        orders: JSON.parse(JSON.stringify(orders)),
       },
     };
   } catch (error) {

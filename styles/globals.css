@@ -58,10 +58,26 @@ a {
   }
 }
 .box {
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
   width: 100%;
   padding: 2rem 1rem;
+  min-height: 100vh;
+  position: relative;
+}
+.bottom {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 10px 10px 101px -5px rgba(0, 0, 0, 0.62);
+}
+.bottom span {
+  padding: 1rem;
+  color: rgb(136, 136, 136);
 }
 .signup-container {
   max-width: 400px;
@@ -118,10 +134,9 @@ a {
 /* tray */
 .tray {
   background-color: rgb(247, 245, 245);
-  padding-top: 1rem;
   overflow-x: scroll;
   display: grid;
-  grid-template-rows: 30vh;
+  grid-template-rows: 25vh;
   overflow-y: hidden;
 }
 .tray .item-tray {
@@ -153,4 +168,13 @@ a {
 }
 .star-checked {
   color: var(--base-orange);
+}
+
+/* navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+}
+.navbar .icons span {
+  padding: 0px 0.5rem;
 }
