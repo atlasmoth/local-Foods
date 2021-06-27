@@ -11,6 +11,7 @@ export default function Restaurant({ data }) {
         </div>
         <div className="tray-meta">
           <p>{data.name}</p>
+          <p>{data["data-location"].address}</p>
           <p>
             <span>
               {parseFloat(data.user_rating.aggregate_rating).toFixed(1)}
