@@ -2,21 +2,29 @@ import Search from "./../components/search";
 import Tray from "./../components/tray";
 import { connectToDatabase } from "./../utils/db";
 import Cookie from "next-cookies";
-import { useEffect } from "react";
 import { ObjectId } from "mongodb";
 import Nav from "./../components/navbar";
 import Bottom from "./../components/bottom";
+import Results from "./../components/results";
+import { useState } from "react";
 
 export default function UserApp({ items, orders }) {
-  console.log(orders);
+  // console.log(orders);
   const [{ byDistance, byRating }] = items;
+  const [searchRes, setSearchRes] = useState([]);
 
   return (
     <div className="box">
       <Nav />
-      <Search />
-      <Tray items={byDistance} title="Restaurants near you" />
-      <Tray items={[]} title="Highest rated" />
+      <Search load={(data) => setSearchRes(data)} />
+      {searchRes.length ? (
+        <Results items={searchRes} />
+      ) : (
+        <>
+          <Tray items={byDistance} title="Restaurants near you" />
+          <Tray items={byRating} title="Highest rated" />
+        </>
+      )}
 
       <Bottom />
     </div>
