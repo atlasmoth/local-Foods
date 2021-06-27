@@ -66,7 +66,7 @@ a {
   position: relative;
 }
 .bottom {
-  position: absolute;
+  position: fixed;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -74,6 +74,8 @@ a {
   display: flex;
   justify-content: space-between;
   box-shadow: 10px 10px 101px -5px rgba(0, 0, 0, 0.62);
+  max-width: 500px;
+  margin: 0 auto;
 }
 .bottom span {
   padding: 1rem;
@@ -174,7 +176,60 @@ a {
 .navbar {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 1rem;
 }
 .navbar .icons span {
   padding: 0px 0.5rem;
+}
+
+/* slider */
+
+.slider {
+  display: grid;
+  overflow-x: scroll;
+  margin-top: 3rem;
+}
+.slider .slide {
+  border-bottom: 5px solid #eee;
+  padding: 0.5rem;
+  text-align: center;
+}
+.slider .slide.selected {
+  border-color: var(--base-orange);
+}
+.slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.slider {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* tabs */
+.tabs .tab {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+  grid-template-rows: 150px;
+  align-items: center;
+  /* background-color: #fd6b01; */
+}
+.tabs .tab img {
+  width: 60px;
+  height: 50px;
+  border-radius: 5px;
+}
+.tabs .tab div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.9em;
+}
+.tabs .tab .tab-desc span {
+  text-align: center;
+}
+
+.tabs .tab input[type="num"] {
+  width: 75%;
 }
