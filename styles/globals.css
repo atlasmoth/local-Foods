@@ -159,7 +159,7 @@ a {
   -webkit-box-shadow: 10px 10px 101px -24px rgba(0, 0, 0, 0.62);
   -moz-box-shadow: 10px 10px 101px -24px rgba(0, 0, 0, 0.62);
 }
-.tray .item-tray img {
+.item-tray img {
   display: block;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;

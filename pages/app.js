@@ -9,15 +9,13 @@ import Bottom from "./../components/bottom";
 
 export default function UserApp({ items, orders }) {
   console.log(orders);
-  const [data] = items;
-  useEffect(() => {
-    console.log(data);
-  }, []);
+  const [{ byDistance, byRating }] = items;
+
   return (
     <div className="box">
       <Nav />
       <Search />
-      <Tray items={[]} title="Restaurants near you" />
+      <Tray items={byDistance} title="Restaurants near you" />
       <Tray items={[]} title="Highest rated" />
 
       <Bottom />
@@ -40,12 +38,13 @@ export async function getServerSideProps(ctx) {
               coordinates: [parseFloat(-73.935242), parseFloat(40.73061)],
             },
             distanceField: "distance",
-            query: {
-              "loc.type": "Point",
-              has_online_delivery: { $ne: 0 },
-              has_table_booking: { $ne: 0 },
-            },
             spherical: true,
+            distanceMultiplier: 0.001,
+          },
+        },
+        {
+          $project: {
+            menu: false,
           },
         },
         {

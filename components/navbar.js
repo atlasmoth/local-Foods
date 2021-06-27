@@ -1,13 +1,21 @@
 import { useAuth } from "./../contexts/authContext";
+import { useRouter } from "next/router";
 
 export default function Navbar({ title }) {
   const context = useAuth();
-
+  const router = useRouter();
   return (
     <div className="navbar">
       <div className="back">
         <span>
-          <i className="fa fa-arrow-left" aria-hidden="true"></i>
+          <i
+            className="fa fa-arrow-left"
+            aria-hidden="true"
+            style={{
+              color: "rgb(33, 158, 188)",
+            }}
+            onClick={(e) => router.back()}
+          ></i>
         </span>
       </div>
       <div className="title">
