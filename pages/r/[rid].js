@@ -50,7 +50,14 @@ export default function Restaurant({ data }) {
           </div>
         ))}
       </div>
-      <Tabs items={data.menu[current]} />
+      <Tabs
+        items={data.menu[current]}
+        place={{
+          name: data.name,
+          id: data._id,
+          location: data["data-location"],
+        }}
+      />
       <Bottom />
     </div>
   );
