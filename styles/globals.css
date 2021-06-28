@@ -233,3 +233,16 @@ a {
 .tabs .tab input[type="num"] {
   width: 75%;
 }
+
+/* date */
+.date form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.date form button {
+  border: none;
+  background-color: var(--base-orange);
+  color: var(--base-light);
+  padding: 5px;
+}

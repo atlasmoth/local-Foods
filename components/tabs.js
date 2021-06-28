@@ -4,6 +4,8 @@ import { useAuth } from "./../contexts/authContext";
 
 export default function Tabs({ items, place }) {
   // console.log(place);
+  const cartContext = useCart();
+  const authContext = useAuth();
 
   return (
     <div className="tabs">
@@ -11,11 +13,10 @@ export default function Tabs({ items, place }) {
         const [val, setVal] = useState("1");
         const [checked, setChecked] = useState(false);
         const dateRef = useRef(new Date());
-        useEffect(() => {
-          console.log(
-            dateRef.current.toISOString().split("T")[1].split(".")[0]
-          );
-        }, []);
+        const [currDate, setCurrDate] = useState(
+          dateRef.current.toISOString().split("T")[0]
+        );
+
         return (
           <div key={i.name + Math.random() * Math.random()}>
             <div className="tab">
@@ -68,48 +69,90 @@ export default function Tabs({ items, place }) {
                     id="favorite"
                     // onChange={setChecked((s) => !s)}
                     checked={checked}
-                    onChange={(e) => setChecked((s) => !s)}
+                    onChange={(e) => {
+                      if (checked) {
+                        cartContext.dispatch({
+                          type: "delete",
+                          name: i.name,
+                          restaurant: place.id,
+                        });
+                        setChecked((s) => !s);
+                      } else {
+                        setChecked((s) => !s);
+                      }
+                    }}
                   />
                 </span>
               </div>
             </div>
-            <div className="date">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  console.log(Object.fromEntries(new FormData(e.target)));
-                }}
-              >
-                <span>
-                  <input
-                    type="date"
-                    name="book"
-                    min={dateRef.current.toISOString().split("T")[0]}
-                    max={
-                      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-                        .toISOString()
-                        .split("T")[0]
-                    }
-                    required
-                  />
-                </span>
-                <span>
-                  <input
-                    type="time"
-                    name="time"
-                    min="9:00"
-                    max="21:00"
-                    required
-                  />
-                </span>
-                <span>
-                  <button>Book</button>
-                </span>
-              </form>
-            </div>
+            {checked && (
+              <div className="date">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const formObj = Object.fromEntries(new FormData(e.target));
+
+                    cartContext.dispatch({
+                      type: "add",
+                      item: {
+                        ...i,
+                        creator: authContext.state.user._id,
+                        count: val,
+                        ...formObj,
+                        restaurant: place.id,
+                        location: place.location,
+                        restaurantName: place.name,
+                      },
+                    });
+                    setChecked(false);
+                  }}
+                >
+                  <span>
+                    <input
+                      type="date"
+                      name="book"
+                      min={dateRef.current.toISOString().split("T")[0]}
+                      max={
+                        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                          .toISOString()
+                          .split("T")[0]
+                      }
+                      value={currDate}
+                      onChange={(e) => setCurrDate(e.target.value)}
+                      required
+                    />
+                  </span>
+                  <span>
+                    <input
+                      type="time"
+                      name="time"
+                      min={
+                        dateRef.current.toISOString().split("T")[0] === currDate
+                          ? splitDate()
+                          : "09:00"
+                      }
+                      max="21:00"
+                      required
+                    />
+                  </span>
+                  <span>
+                    <button>Book</button>
+                  </span>
+                </form>
+              </div>
+            )}
           </div>
         );
       })}
     </div>
   );
+}
+
+function splitDate() {
+  const [a, b] = new Date()
+    .toISOString()
+    .split("T")[1]
+    .split(".")[0]
+    .split(":");
+  return `${a}:${b}`;
 }
