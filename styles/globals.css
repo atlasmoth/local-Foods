@@ -73,7 +73,8 @@ a {
   z-index: 5;
   display: flex;
   justify-content: space-between;
-  box-shadow: 10px 10px 101px -5px rgba(0, 0, 0, 0.62);
+  box-shadow: 10px 10px 101px 5px rgba(0, 0, 0, 0.62);
+  background-color: #fff;
   max-width: 500px;
   margin: 0 auto;
 }

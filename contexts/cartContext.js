@@ -38,7 +38,7 @@ export function CartProvider({ children }) {
     Boolean(state.items.length) &&
       localStorage.setItem("cart", JSON.stringify(state.items));
   }, [state.items]);
-  console.log(state);
+
   return (
     <cartContext.Provider value={{ state, dispatch }}>
       {children}
