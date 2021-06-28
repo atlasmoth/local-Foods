@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "./../contexts/cartContext";
 import { useAuth } from "./../contexts/authContext";
 
 export default function Tabs({ items, place }) {
   // console.log(place);
-  const authContext = useAuth();
-  const cartContext = useCart();
 
   return (
     <div className="tabs">
       {items.map((i) => {
         const [val, setVal] = useState("1");
         const [checked, setChecked] = useState(false);
+        const dateRef = useRef(new Date());
+        useEffect(() => {
+          console.log(
+            dateRef.current.toISOString().split("T")[1].split(".")[0]
+          );
+        }, []);
         return (
           <div key={i.name + Math.random() * Math.random()}>
             <div className="tab">
@@ -70,23 +74,38 @@ export default function Tabs({ items, place }) {
               </div>
             </div>
             <div className="date">
-              <span>
-                <input type="date" name="book" id="book" />
-              </span>
-              <span>
-                <input
-                  type="time"
-                  name="time"
-                  id="time"
-                  min="09:00"
-                  max="18:00"
-                  required
-                  step="1800"
-                />
-              </span>
-              <span>
-                <button>Book</button>
-              </span>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  console.log(Object.fromEntries(new FormData(e.target)));
+                }}
+              >
+                <span>
+                  <input
+                    type="date"
+                    name="book"
+                    min={dateRef.current.toISOString().split("T")[0]}
+                    max={
+                      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                        .toISOString()
+                        .split("T")[0]
+                    }
+                    required
+                  />
+                </span>
+                <span>
+                  <input
+                    type="time"
+                    name="time"
+                    min="9:00"
+                    max="21:00"
+                    required
+                  />
+                </span>
+                <span>
+                  <button>Book</button>
+                </span>
+              </form>
             </div>
           </div>
         );
