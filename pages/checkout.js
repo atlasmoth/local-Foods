@@ -1,17 +1,15 @@
-import Layout from "./../components/layout";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import CheckoutForm from "../components/checkoutForm";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_PUBLIC_STRIPE);
 
 export default function Checkout() {
-  // console.log(process.env.NEXT_PUBLIC_PUBLIC_STRIPE);
-
   return (
-    <div className="box">
-      <Layout>
-        <Elements />
-      </Layout>
-    </div>
+    <Elements stripe={stripePromise}>
+      <div className="box">
+        <CheckoutForm />
+      </div>
+    </Elements>
   );
-}
-
-function Elements() {
-  return <div></div>;
 }
