@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useCart } from "./../contexts/cartContext";
 import { useAuth } from "./../contexts/authContext";
 
 export default function Tabs({ items, place }) {
-  // console.log(place);
   const cartContext = useCart();
   const authContext = useAuth();
 
@@ -104,11 +103,9 @@ export default function Tabs({ items, place }) {
                               creator: authContext.state.user._id,
                               ...formObj,
                               restaurant: place.id,
-                              address: place.location.address,
-                              restaurantName: place.name,
                             },
                           },
-                          unit_amount: Math.round(parseInt(i.price)),
+                          unit_amount: Math.round(parseInt(i.price) * 100),
                         },
                         quantity: Math.round(parseInt(val)),
                       },
