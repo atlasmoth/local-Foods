@@ -3,6 +3,8 @@ import Navbar from "./../components/navbar";
 import Bottom from "./../components/bottom";
 import { useCart } from "./../contexts/cartContext";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_PUBLIC_STRIPE);
+import { connectToDatabase } from "./../utils/db";
+import { ObjectId } from "mongodb";
 
 export default function Checkout() {
   const context = useCart();
@@ -42,4 +44,29 @@ export default function Checkout() {
       )}
     </div>
   );
+}
+
+export async function getServerSideProps(ctx) {
+  try {
+    const { db } = await connectToDatabase();
+    const res = await db
+      .collection("tempOrder")
+      .findOne({ _id: ObjectId(ctx.query.id) });
+
+    if (!res) {
+      return {
+        props: {},
+      };
+    }
+    await db.collection("orders").insertMany(res.items);
+    await db.collection("tempOrder").remove({ _id: ObjectId(ctx.query.id) });
+    return {
+      props: {},
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {},
+    };
+  }
 }

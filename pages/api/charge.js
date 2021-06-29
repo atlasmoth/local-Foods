@@ -1,5 +1,6 @@
 import nc from "next-connect";
 import stripeInit from "stripe";
+import { connectToDatabase } from "../../utils/db";
 
 const stripe = stripeInit(process.env.PRIVATE_STRIPE);
 const handler = nc();
@@ -8,11 +9,14 @@ async function checkout(req, res) {
   const { items } = req.body;
 
   try {
+    const { db } = await connectToDatabase();
+    const data = await db.collection("tempOrder").insertOne({ items });
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: items,
       mode: "payment",
-      success_url: "http://localhost:3000/checkout",
+      success_url: "http://localhost:3000/checkout?id=" + data.insertedId,
       cancel_url: "http://localhost:3000/checkout",
     });
 

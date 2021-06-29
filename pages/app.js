@@ -2,14 +2,13 @@ import Search from "./../components/search";
 import Tray from "./../components/tray";
 import { connectToDatabase } from "./../utils/db";
 import Cookie from "next-cookies";
-import { ObjectId } from "mongodb";
 import Nav from "./../components/navbar";
 import Bottom from "./../components/bottom";
 import Results from "./../components/results";
 import { useState } from "react";
 
 export default function UserApp({ items, orders }) {
-  // console.log(orders);
+  console.log(orders);
   const [{ byDistance, byRating }] = items;
   const [searchRes, setSearchRes] = useState([]);
 
@@ -82,7 +81,7 @@ export async function getServerSideProps(ctx) {
       .aggregate([
         {
           $match: {
-            creator: ObjectId(foodsUser._id),
+            "price_data.product_data.metadata.creator": foodsUser._id,
           },
         },
       ])
