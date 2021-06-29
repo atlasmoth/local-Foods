@@ -5,14 +5,21 @@ const stripe = stripeInit(process.env.PRIVATE_STRIPE);
 const handler = nc();
 
 async function checkout(req, res) {
-  const { items, total } = req.body;
-  // Create a PaymentIntent with the order amount and currency
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: calculateOrderAmount(500),
-    currency: "usd",
-  });
-  res.send({
-    clientSecret: paymentIntent.client_secret,
-  });
+  const { items } = req.body;
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: items,
+      mode: "payment",
+      success_url: "http://localhost:3000/checkout",
+      cancel_url: "http://localhost:3000/checkout",
+    });
+
+    res.json({ id: session.id });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ message: error.message });
+  }
 }
 export default handler.post(checkout);

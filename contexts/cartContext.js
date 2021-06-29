@@ -11,8 +11,9 @@ function reducer(state, action) {
     case "delete": {
       return {
         ...state,
+
         items: state.items.filter(
-          (i) => i.name !== action.name && i.restaurant !== action.restaurant
+          (i) => i.price_data.product_data.name !== action.name
         ),
       };
     }
@@ -38,7 +39,7 @@ export function CartProvider({ children }) {
     Boolean(state.items.length) &&
       localStorage.setItem("cart", JSON.stringify(state.items));
   }, [state.items]);
-
+  console.log(state);
   return (
     <cartContext.Provider value={{ state, dispatch }}>
       {children}

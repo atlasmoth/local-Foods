@@ -73,7 +73,7 @@ export default function Tabs({ items, place }) {
                       if (checked) {
                         cartContext.dispatch({
                           type: "delete",
-                          name: i.name,
+                          name: `${i.name} @ ${place.name} @${place.location.address}`,
                           restaurant: place.id,
                         });
                         setChecked((s) => !s);
@@ -95,13 +95,22 @@ export default function Tabs({ items, place }) {
                     cartContext.dispatch({
                       type: "add",
                       item: {
-                        ...i,
-                        creator: authContext.state.user._id,
-                        count: val,
-                        ...formObj,
-                        restaurant: place.id,
-                        location: place.location,
-                        restaurantName: place.name,
+                        price_data: {
+                          currency: "usd",
+                          product_data: {
+                            name: `${i.name} @ ${place.name} @${place.location.address}`,
+                            images: [`${i.image}`],
+                            metadata: {
+                              creator: authContext.state.user._id,
+                              ...formObj,
+                              restaurant: place.id,
+                              address: place.location.address,
+                              restaurantName: place.name,
+                            },
+                          },
+                          unit_amount: Math.round(parseInt(i.price)),
+                        },
+                        quantity: Math.round(parseInt(val)),
                       },
                     });
                     setChecked(false);
