@@ -2,9 +2,11 @@ import { loadStripe } from "@stripe/stripe-js";
 import Navbar from "./../components/navbar";
 import Bottom from "./../components/bottom";
 import { useCart } from "./../contexts/cartContext";
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_PUBLIC_STRIPE);
+
 import { connectToDatabase } from "./../utils/db";
 import { ObjectId } from "mongodb";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_PUBLIC_STRIPE);
 
 export default function Checkout() {
   const context = useCart();
@@ -20,7 +22,8 @@ export default function Checkout() {
       body: JSON.stringify({ items: context.state.items }),
     });
     const session = await response.json();
-
+    localStorage.setItem("cart", JSON.stringify([]));
+    context.dispatch({ type: "load", items: [] });
     const result = await stripe.redirectToCheckout({
       sessionId: session.id,
     });
@@ -31,17 +34,74 @@ export default function Checkout() {
   };
   return (
     <div className="box">
+      <Navbar title="Cart" />
       {context?.state?.items.length ? (
         <>
-          <Navbar title="Checkout" />
+          {context?.state?.items.map((i) => {
+            const dataName = i.price_data.product_data.name.split("@");
+            return (
+              <div
+                key={
+                  i.price_data.product_data.name + Math.random() * Math.random()
+                }
+              >
+                <div className="tab">
+                  <div className="tab-image">
+                    <img
+                      src="https://via.placeholder.com/70/eee/fd6b0"
+                      alt="Dummy"
+                    />
+                  </div>
+                  <div className="tab-desc">
+                    <span>{dataName[0]}</span>
+                    <span
+                      style={{
+                        color: "#fd6b01",
+                      }}
+                    >
+                      &#x20A6;{i.price_data.unit_amount / 100}
+                    </span>
+                  </div>
+                  <div className="tab-range">
+                    <span
+                      style={{
+                        color: "#fd6b01",
+                      }}
+                    >
+                      &#x20A6; {(i.price_data.unit_amount * i.quantity) / 100} (
+                      {i.quantity})
+                    </span>
+                  </div>
+                  <div className="tab-check">
+                    <span>
+                      <input
+                        type="checkbox"
+                        name="favorite"
+                        id="favorite"
+                        defaultChecked={true}
+                        onChange={(e) => {
+                          context.dispatch({
+                            type: "delete",
+                            name: i.price_data.product_data.name,
+                            restaurant:
+                              i.price_data.product_data.metadata.restaurant,
+                          });
+                        }}
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
           <button role="link" onClick={handleClick}>
             Checkout
           </button>
-          <Bottom />
         </>
       ) : (
         <h3>Cart is currently empty</h3>
       )}
+      <Bottom />
     </div>
   );
 }

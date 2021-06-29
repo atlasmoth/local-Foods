@@ -64,6 +64,7 @@ a {
   padding: 2rem 1rem;
   min-height: 100vh;
   position: relative;
+  padding-bottom: 100px;
 }
 .bottom {
   position: fixed;
@@ -209,29 +210,29 @@ a {
 }
 
 /* tabs */
-.tabs .tab {
+.tab {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr 1fr;
   grid-template-rows: 150px;
   align-items: center;
   /* background-color: #fd6b01; */
 }
-.tabs .tab img {
+.tab img {
   width: 60px;
   height: 50px;
   border-radius: 5px;
 }
-.tabs .tab div {
+.tab div {
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: 0.9em;
 }
-.tabs .tab .tab-desc span {
+.tab .tab-desc span {
   text-align: center;
 }
 
-.tabs .tab input[type="num"] {
+.tab input[type="num"] {
   width: 75%;
 }
 
