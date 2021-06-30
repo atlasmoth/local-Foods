@@ -8,16 +8,38 @@ export default function login() {
   const context = useAuth();
   function handleSubmit(e) {
     e.preventDefault();
-    axios
-      .post("/api/create", { ...state })
-      .then((res) => {
-        const {
-          data: { user },
-        } = res;
+    function success(position) {
+      const latitude = parseFloat(position.coords.latitude);
+      const longitude = parseFloat(position.coords.longitude);
 
-        context.dispatch({ type: "login", user });
-      })
-      .catch(console.log);
+      axios
+        .post("/api/create", { ...state, latitude, longitude })
+        .then((res) => {
+          const {
+            data: { user },
+          } = res;
+          console.log(user);
+          context.dispatch({ type: "login", user });
+        })
+        .catch(console.log);
+    }
+    function error() {
+      axios
+        .post("/api/create", {
+          ...state,
+          latitude: parseFloat(40.73061),
+          longitude: parseFloat(-73.935242),
+        })
+        .then((res) => {
+          const {
+            data: { user },
+          } = res;
+
+          context.dispatch({ type: "login", user });
+        })
+        .catch(console.log);
+    }
+    navigator.geolocation.getCurrentPosition(success, error);
   }
   return (
     <div className="signup-container">
