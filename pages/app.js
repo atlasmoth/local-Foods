@@ -101,7 +101,7 @@ export default function UserApp({ items, orders }) {
 
 export async function getServerSideProps(ctx) {
   const { foodsUser } = Cookie(ctx);
-
+  console.log(foodsUser);
   try {
     const { db } = await connectToDatabase();
     const docs = await db

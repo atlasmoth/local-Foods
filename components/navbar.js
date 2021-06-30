@@ -8,7 +8,7 @@ export default function Navbar({ title }) {
   return (
     <div className="navbar">
       <div className="back">
-        <span>
+        <span style={{ cursor: "pointer" }}>
           <i
             className="fa fa-arrow-left"
             aria-hidden="true"
@@ -16,6 +16,7 @@ export default function Navbar({ title }) {
               color: "rgb(33, 158, 188)",
             }}
             onClick={(e) => router.back()}
+            title="back"
           ></i>
         </span>
         <span>
@@ -25,6 +26,7 @@ export default function Navbar({ title }) {
                 className="fa fa-home"
                 aria-hidden="true"
                 style={{ color: "rgb(33, 158, 188)" }}
+                title="Home"
               ></i>
             </a>
           </Link>
@@ -43,6 +45,7 @@ export default function Navbar({ title }) {
                 style={{
                   color: "rgb(33, 158, 188)",
                 }}
+                title="Checkout"
               ></i>
             </span>
           </a>
@@ -56,6 +59,7 @@ export default function Navbar({ title }) {
                 style={{
                   color: "rgb(33, 158, 188)",
                 }}
+                title="Orders"
               ></i>
             </a>
           </Link>

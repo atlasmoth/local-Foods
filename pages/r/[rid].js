@@ -2,7 +2,6 @@ import { useState } from "react";
 import Navbar from "../../components/navbar";
 import { connectToDatabase } from "../../utils/db";
 import Tabs from "../../components/tabs";
-import Bottom from "./../../components/bottom";
 
 export default function Restaurant({ data }) {
   const keys = Array.from(new Set(Object.keys(data.menu)));
@@ -22,11 +21,29 @@ export default function Restaurant({ data }) {
               {parseFloat(data.user_rating.aggregate_rating).toFixed(1)}
             </span>
             <span>
-              <span className="fa fa-star star-checked"></span>
-              <span className="fa fa-star star-checked"></span>
-              <span className="fa fa-star star-checked"></span>
-              <span className="fa fa-star "></span>
-              <span className="fa fa-star "></span>
+              {Array.from(
+                new Array(
+                  Math.round(parseFloat(data?.user_rating?.aggregate_rating))
+                ),
+                () => (
+                  <span
+                    className="fa fa-star star-checked"
+                    key={Math.random() * Math.random()}
+                  ></span>
+                )
+              ).map((i) => i)}
+              {Array.from(
+                new Array(
+                  5 -
+                    Math.round(parseFloat(data?.user_rating?.aggregate_rating))
+                ),
+                () => (
+                  <span
+                    className="fa fa-star"
+                    key={Math.random() * Math.random()}
+                  ></span>
+                )
+              ).map((i) => i)}
             </span>
             <span>({data.user_rating.votes})</span>
           </p>
@@ -58,7 +75,6 @@ export default function Restaurant({ data }) {
           location: data["data-location"],
         }}
       />
-      <Bottom />
     </div>
   );
 }

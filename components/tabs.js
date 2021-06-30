@@ -11,6 +11,7 @@ export default function Tabs({ items, place }) {
       {items.map((i) => {
         const [val, setVal] = useState("1");
         const [checked, setChecked] = useState(false);
+        const [booked, setBooked] = useState(false);
         const dateRef = useRef(new Date());
         const [currDate, setCurrDate] = useState(
           dateRef.current.toISOString().split("T")[0]
@@ -49,7 +50,7 @@ export default function Tabs({ items, place }) {
                     }}
                     value={val}
                     max="10"
-                    disabled={checked}
+                    disabled={checked || booked}
                   />
                 </span>
                 <span
@@ -67,19 +68,9 @@ export default function Tabs({ items, place }) {
                     name="favorite"
                     id="favorite"
                     // onChange={setChecked((s) => !s)}
+                    disabled={booked}
                     checked={checked}
-                    onChange={(e) => {
-                      if (checked) {
-                        cartContext.dispatch({
-                          type: "delete",
-                          name: `${i.name} @ ${place.name} @${place.location.address}`,
-                          restaurant: place.id,
-                        });
-                        setChecked((s) => !s);
-                      } else {
-                        setChecked((s) => !s);
-                      }
-                    }}
+                    onChange={(e) => setChecked((s) => !s)}
                   />
                 </span>
               </div>
@@ -111,6 +102,7 @@ export default function Tabs({ items, place }) {
                       },
                     });
                     setChecked(false);
+                    setBooked(true);
                   }}
                 >
                   <span>

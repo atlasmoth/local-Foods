@@ -52,7 +52,12 @@ export default function Checkout() {
                     />
                   </div>
                   <div className="tab-desc">
-                    <span>{dataName[0]}</span>
+                    <span>
+                      <small>{dataName[0]}</small>
+                    </span>
+                    <span>
+                      <small>{dataName[1]}</small>
+                    </span>
                     <span
                       style={{
                         color: "#fd6b01",
@@ -93,7 +98,7 @@ export default function Checkout() {
               </div>
             );
           })}
-          <button role="link" onClick={handleClick}>
+          <button role="link" onClick={handleClick} className="checkout">
             Checkout
           </button>
         </>

@@ -257,3 +257,17 @@ a {
   width: 20px;
   border-radius: 5px;
 }
+
+button.checkout {
+  display: block;
+  background-color: var(--base-orange);
+  color: var(--base-light);
+  margin: 0 auto;
+  border: none;
+  border-radius: 5px;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  box-shadow: 10px 10px 78px -11px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 10px 10px 78px -11px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 10px 78px -11px rgba(0, 0, 0, 0.75);
+}

@@ -8,10 +8,20 @@ import { ObjectId } from "mongodb";
 const handler = nc();
 async function createUser(req, res) {
   const oldToken = req.cookies["foodsToken"];
-
+  console.log(oldToken);
   if (oldToken) {
     const decoded = jwt.verify(oldToken, process.env.JWT_SECRET);
-
+    if (!decoded) {
+      res.setHeader(
+        "Set-Cookie",
+        cookie.serialize("foodsToken", "", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== "development",
+          maxAge: -1,
+          sameSite: "strict",
+        })
+      );
+    }
     if (decoded) {
       try {
         const { db } = await connectToDatabase();
@@ -31,6 +41,7 @@ async function createUser(req, res) {
         }
       } catch (error) {
         console.log(error);
+
         return res.status(400).send({ success: false, message: error.message });
       }
     }

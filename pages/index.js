@@ -1,7 +1,13 @@
 import Splash from "../components/splash";
 import Cookie from "next-cookies";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-export default function Home() {
+export default function Home({ auth }) {
+  const router = useRouter();
+  useEffect(() => {
+    auth ? router.push("/app") : router.push("/signup");
+  }, []);
   return (
     <div>
       <Splash />
@@ -9,16 +15,10 @@ export default function Home() {
   );
 }
 export async function getServerSideProps(context) {
-  const res = context.res;
-  const req = context.req;
   const { foodsUser } = Cookie(context);
-  if (foodsUser) {
-    res.writeHead(302, { Location: `/app` });
-    res.end();
-    // return { props: {} };
-  } else {
-    res.writeHead(302, { Location: `/login` });
-    res.end();
-    // return { props: {} };
-  }
+  return {
+    props: {
+      auth: Boolean(foodsUser),
+    },
+  };
 }
