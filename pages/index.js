@@ -15,10 +15,10 @@ export async function getServerSideProps(context) {
   if (foodsUser) {
     res.writeHead(302, { Location: `/app` });
     res.end();
-    return { props: {} };
+    // return { props: {} };
   } else {
     res.writeHead(302, { Location: `/login` });
     res.end();
-    return { props: {} };
+    // return { props: {} };
   }
 }

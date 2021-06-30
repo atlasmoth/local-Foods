@@ -28,11 +28,33 @@ export default function Tray({ items, title }) {
                       {parseFloat(i?.user_rating?.aggregate_rating).toFixed(1)}
                     </span>
                     <span>
-                      <span className="fa fa-star star-checked"></span>
-                      <span className="fa fa-star star-checked"></span>
-                      <span className="fa fa-star star-checked"></span>
-                      <span className="fa fa-star "></span>
-                      <span className="fa fa-star "></span>
+                      {Array.from(
+                        new Array(
+                          Math.round(
+                            parseFloat(i?.user_rating?.aggregate_rating)
+                          )
+                        ),
+                        () => (
+                          <span
+                            className="fa fa-star star-checked"
+                            key={Math.random() * Math.random()}
+                          ></span>
+                        )
+                      ).map((i) => i)}
+                      {Array.from(
+                        new Array(
+                          5 -
+                            Math.round(
+                              parseFloat(i?.user_rating?.aggregate_rating)
+                            )
+                        ),
+                        () => (
+                          <span
+                            className="fa fa-star"
+                            key={Math.random() * Math.random()}
+                          ></span>
+                        )
+                      ).map((i) => i)}
                     </span>
                     <span> ({i?.user_rating?.votes})</span>
                   </p>

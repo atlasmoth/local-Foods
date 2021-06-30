@@ -9,6 +9,7 @@ export default function Orders({ orders }) {
       <Navbar title="Orders" />
       {orders.map((i) => {
         const dataName = i.price_data.product_data.name.split("@");
+        console.log(new Date(i.price_data.product_data.metadata.book));
         return (
           <div
             key={i.price_data.product_data.name + Math.random() * Math.random()}

@@ -28,7 +28,15 @@ async function login(req, res) {
       })
     );
 
-    res.send({ success: true, user: { _id: user._id, email: user.email } });
+    res.send({
+      success: true,
+      user: {
+        _id: user._id,
+        email: user.email,
+        latitude: user.latitude,
+        longitude: user.longitude,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(400).send({ success: false, message: error.message });
