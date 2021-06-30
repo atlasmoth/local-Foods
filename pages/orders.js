@@ -1,5 +1,4 @@
 import Navbar from "./../components/navbar";
-import Bottom from "./../components/bottom";
 import { connectToDatabase } from "./../utils/db";
 import Cookie from "next-cookies";
 
@@ -9,7 +8,12 @@ export default function Orders({ orders }) {
       <Navbar title="Orders" />
       {orders.map((i) => {
         const dataName = i.price_data.product_data.name.split("@");
-        console.log(new Date(i.price_data.product_data.metadata.book));
+        const orderDate = new Date(
+          i.price_data.product_data.metadata.book +
+            ":" +
+            i.price_data.product_data.metadata.time
+        );
+
         return (
           <div
             key={i.price_data.product_data.name + Math.random() * Math.random()}
@@ -22,8 +26,12 @@ export default function Orders({ orders }) {
                 />
               </div>
               <div className="tab-desc">
-                <span>{dataName[0]}</span>
-                <span>{dataName[1]}</span>
+                <span>
+                  <small>{dataName[0]}</small>
+                </span>
+                <span>
+                  <small>{dataName[1]}</small>
+                </span>
                 <span
                   style={{
                     color: "#fd6b01",
@@ -44,19 +52,22 @@ export default function Orders({ orders }) {
               </div>
               <div className="tab-check">
                 <span>
-                  <input
-                    type="checkbox"
-                    name="favorite"
-                    id="favorite"
-                    defaultChecked={true}
-                  />
+                  <div
+                    className="order-box"
+                    style={{
+                      backgroundColor: `${
+                        orderDate.getTime() > Date.now()
+                          ? "green"
+                          : "var(--base-orange)"
+                      }`,
+                    }}
+                  ></div>
                 </span>
               </div>
             </div>
           </div>
         );
       })}
-      <Bottom />
     </div>
   );
 }
@@ -72,6 +83,9 @@ export async function getServerSideProps(ctx) {
           $match: {
             "price_data.product_data.metadata.creator": foodsUser._id,
           },
+        },
+        {
+          $sort: { lastModified: -1 },
         },
       ])
       .toArray();

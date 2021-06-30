@@ -58,7 +58,7 @@ a {
   }
 }
 .box {
-  max-width: 500px;
+  max-width: 600px;
   margin: 0 auto;
   width: 100%;
   padding: 2rem 1rem;
@@ -231,7 +231,9 @@ a {
 .tab .tab-desc span {
   text-align: center;
 }
-
+.navbar span {
+  padding: 1rem;
+}
 .tab input[type="num"] {
   width: 75%;
 }
@@ -247,4 +249,11 @@ a {
   background-color: var(--base-orange);
   color: var(--base-light);
   padding: 5px;
+}
+
+/* order button */
+.order-box {
+  height: 20px;
+  width: 20px;
+  border-radius: 5px;
 }

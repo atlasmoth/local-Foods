@@ -1,6 +1,5 @@
 import { loadStripe } from "@stripe/stripe-js";
 import Navbar from "./../components/navbar";
-import Bottom from "./../components/bottom";
 import { useCart } from "./../contexts/cartContext";
 
 import { connectToDatabase } from "./../utils/db";
@@ -101,7 +100,6 @@ export default function Checkout() {
       ) : (
         <h3>Cart is currently empty</h3>
       )}
-      <Bottom />
     </div>
   );
 }
@@ -118,8 +116,12 @@ export async function getServerSideProps(ctx) {
         props: {},
       };
     }
-    await db.collection("orders").insertMany(res.items);
-    await db.collection("tempOrder").remove({ _id: ObjectId(ctx.query.id) });
+    await db
+      .collection("orders")
+      .insertMany(
+        res.items.map((r) => ({ ...r, lastModified: new Date().toISOString() }))
+      );
+    await db.collection("tempOrder").deleteOne({ _id: ObjectId(ctx.query.id) });
     return {
       props: {},
     };

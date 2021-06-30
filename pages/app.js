@@ -3,7 +3,6 @@ import Tray from "./../components/tray";
 import { connectToDatabase } from "./../utils/db";
 import Cookie from "next-cookies";
 import Nav from "./../components/navbar";
-import Bottom from "./../components/bottom";
 import Results from "./../components/results";
 import { useState } from "react";
 import Link from "next/link";
@@ -40,6 +39,12 @@ export default function UserApp({ items, orders }) {
       </h4>
       {orders.map((i) => {
         const dataName = i.price_data.product_data.name.split("@");
+        const orderDate = new Date(
+          i.price_data.product_data.metadata.book +
+            ":" +
+            i.price_data.product_data.metadata.time
+        );
+
         return (
           <div
             key={i.price_data.product_data.name + Math.random() * Math.random()}
@@ -74,19 +79,22 @@ export default function UserApp({ items, orders }) {
               </div>
               <div className="tab-check">
                 <span>
-                  <input
-                    type="checkbox"
-                    name="favorite"
-                    id="favorite"
-                    defaultChecked={true}
-                  />
+                  <div
+                    className="order-box"
+                    style={{
+                      backgroundColor: `${
+                        orderDate.getTime() > Date.now()
+                          ? "green"
+                          : "var(--base-orange)"
+                      }`,
+                    }}
+                  ></div>
                 </span>
               </div>
             </div>
           </div>
         );
       })}
-      <Bottom />
     </div>
   );
 }
@@ -145,6 +153,10 @@ export async function getServerSideProps(ctx) {
             "price_data.product_data.metadata.creator": foodsUser._id,
           },
         },
+        {
+          $sort: { lastModified: -1 },
+        },
+        { $limit: 5 },
       ])
       .toArray();
     return {

@@ -18,6 +18,17 @@ export default function Navbar({ title }) {
             onClick={(e) => router.back()}
           ></i>
         </span>
+        <span>
+          <Link href="/">
+            <a>
+              <i
+                className="fa fa-home"
+                aria-hidden="true"
+                style={{ color: "rgb(33, 158, 188)" }}
+              ></i>
+            </a>
+          </Link>
+        </span>
       </div>
       <div className="title">
         <p>{title || `Welcome ${context?.state?.user?.email}!`}</p>
@@ -37,13 +48,17 @@ export default function Navbar({ title }) {
           </a>
         </Link>
         <span>
-          <i
-            className="fa fa-bell"
-            aria-hidden="true"
-            style={{
-              color: "rgb(33, 158, 188)",
-            }}
-          ></i>
+          <Link href="/orders">
+            <a>
+              <i
+                className="fa fa-history"
+                aria-hidden="true"
+                style={{
+                  color: "rgb(33, 158, 188)",
+                }}
+              ></i>
+            </a>
+          </Link>
         </span>
       </div>
     </div>
