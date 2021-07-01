@@ -2,8 +2,10 @@ import useForm from "../hooks/useForm";
 import Link from "next/link";
 import axios from "axios";
 import { useAuth } from "./../contexts/authContext";
+import { useRouter } from "next/router";
 
 export default function login() {
+  const router = useRouter();
   const [state, updateState] = useForm({ email: "", password: "" });
   const context = useAuth();
   function handleSubmit(e) {
@@ -16,6 +18,7 @@ export default function login() {
         } = res;
         console.log(user);
         context.dispatch({ type: "login", user });
+        router.push("/app");
       })
       .catch(console.log);
   }
@@ -56,8 +59,6 @@ export default function login() {
             <a>Sign up</a>
           </Link>
         </p>
-        <p>Or login with</p>
-        <div className="login-icons">{/* incons go here son */}</div>
       </div>
     </div>
   );

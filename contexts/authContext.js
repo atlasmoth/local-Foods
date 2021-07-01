@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import cookie from "js-cookie";
+import { useRouter } from "next/router";
 
 const AuthContext = createContext();
 
@@ -19,6 +20,7 @@ function reducer(state, action) {
   }
 }
 function Auth({ children }) {
+  const router = useRouter();
   const [state, dispatch] = useReducer(reducer, { user: null, auth: false });
   useEffect(() => {
     axios
@@ -33,6 +35,7 @@ function Auth({ children }) {
       .catch(() => {
         cookie.remove("foodsUser");
         dispatch({ type: "logout" });
+        router.push("/login");
       });
   }, []);
   return (
