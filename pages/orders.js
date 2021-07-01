@@ -1,6 +1,7 @@
 import Navbar from "./../components/navbar";
 import { connectToDatabase } from "./../utils/db";
 import Cookie from "next-cookies";
+import moment from "moment";
 
 export default function Orders({ orders }) {
   return (
@@ -32,12 +33,20 @@ export default function Orders({ orders }) {
                 <span>
                   <small>{dataName[1]}</small>
                 </span>
+
                 <span
                   style={{
                     color: "#fd6b01",
                   }}
                 >
                   &#x20A6;{i.price_data.unit_amount / 100}
+                </span>
+                <span>
+                  <small>
+                    {orderDate.getTime() > Date.now()
+                      ? moment(orderDate).startOf("date").fromNow()
+                      : moment(orderDate).startOf("date").fromNow()}
+                  </small>
                 </span>
               </div>
               <div className="tab-range">

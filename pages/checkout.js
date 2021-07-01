@@ -121,11 +121,17 @@ export async function getServerSideProps(ctx) {
         props: {},
       };
     }
-    await db
-      .collection("orders")
-      .insertMany(
-        res.items.map((r) => ({ ...r, lastModified: new Date().toISOString() }))
-      );
+    await db.collection("orders").insertMany(
+      res.items.map((r) => ({
+        ...r,
+        lastModified: new Date().toISOString(),
+        date: new Date(
+          r.price_data.product_data.metadata.book +
+            ":" +
+            r.price_data.product_data.metadata.time
+        ).toISOString(),
+      }))
+    );
     await db.collection("tempOrder").deleteOne({ _id: ObjectId(ctx.query.id) });
     return {
       props: {},
