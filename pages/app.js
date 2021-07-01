@@ -101,7 +101,8 @@ export default function UserApp({ items, orders }) {
 
 export async function getServerSideProps(ctx) {
   const { foodsUser } = Cookie(ctx);
-  console.log(foodsUser);
+  console.log(foodsUser.longitude);
+  console.log(foodsUser.latitude);
   try {
     const { db } = await connectToDatabase();
     const docs = await db
@@ -111,7 +112,10 @@ export async function getServerSideProps(ctx) {
           $geoNear: {
             near: {
               type: "Point",
-              coordinates: [parseFloat(-73.935242), parseFloat(40.73061)],
+              coordinates: [
+                foodsUser?.longitude || parseFloat(-73.935242),
+                foodsUser?.latitude || parseFloat(40.73061),
+              ],
             },
             distanceField: "distance",
             spherical: true,

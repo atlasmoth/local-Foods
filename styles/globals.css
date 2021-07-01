@@ -239,16 +239,23 @@ a {
 }
 
 /* date */
-.date form {
+.date form .time {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+}
+.date form .time span {
+  padding: 1rem;
+}
+.date form .time span:first-of-type {
+  margin-right: auto;
 }
 .date form button {
   border: none;
   background-color: var(--base-orange);
   color: var(--base-light);
-  padding: 5px;
+  padding: 0.7rem 2rem;
+  border-radius: 5px;
+  margin: 10px 20px;
 }
 
 /* order button */

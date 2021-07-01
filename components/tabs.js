@@ -105,37 +105,42 @@ export default function Tabs({ items, place }) {
                     setBooked(true);
                   }}
                 >
-                  <span>
-                    <input
-                      type="date"
-                      name="book"
-                      min={dateRef.current.toISOString().split("T")[0]}
-                      max={
-                        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-                          .toISOString()
-                          .split("T")[0]
-                      }
-                      value={currDate}
-                      onChange={(e) => setCurrDate(e.target.value)}
-                      required
-                    />
-                  </span>
-                  <span>
-                    <input
-                      type="time"
-                      name="time"
-                      min={
-                        dateRef.current.toISOString().split("T")[0] === currDate
-                          ? splitDate()
-                          : "09:00"
-                      }
-                      max="21:00"
-                      required
-                    />
-                  </span>
-                  <span>
-                    <button>Book</button>
-                  </span>
+                  <div className="time">
+                    <span>
+                      <input
+                        type="date"
+                        name="book"
+                        min={dateRef.current.toISOString().split("T")[0]}
+                        max={
+                          new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                            .toISOString()
+                            .split("T")[0]
+                        }
+                        value={currDate}
+                        onChange={(e) => setCurrDate(e.target.value)}
+                        required
+                      />
+                    </span>
+                    <span>
+                      <input
+                        type="time"
+                        name="time"
+                        min={
+                          dateRef.current.toISOString().split("T")[0] ===
+                          currDate
+                            ? splitDate()
+                            : "09:00"
+                        }
+                        max="21:00"
+                        required
+                      />
+                    </span>
+                  </div>
+                  <div>
+                    <span>
+                      <button>Book</button>
+                    </span>
+                  </div>
                 </form>
               </div>
             )}
