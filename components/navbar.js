@@ -33,7 +33,9 @@ export default function Navbar({ title }) {
         </span>
       </div>
       <div className="title">
-        <p>{title || `Welcome ${context?.state?.user?.email}!`}</p>
+        <p>
+          {title || `Welcome ${context?.state?.user?.email.split("@")[0]}!`}
+        </p>
       </div>
       <div className="icons">
         <Link href="/checkout">
