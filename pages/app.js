@@ -101,8 +101,7 @@ export default function UserApp({ items, orders }) {
 
 export async function getServerSideProps(ctx) {
   const { foodsUser } = Cookie(ctx);
-  console.log(foodsUser.longitude);
-  console.log(foodsUser.latitude);
+
   try {
     const { db } = await connectToDatabase();
     const docs = await db

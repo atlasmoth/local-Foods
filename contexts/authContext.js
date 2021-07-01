@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import axios from "axios";
+import cookie from "js-cookie";
 
 const AuthContext = createContext();
 
@@ -30,6 +31,7 @@ function Auth({ children }) {
         dispatch({ type: "login", user });
       })
       .catch(() => {
+        cookie.remove("foodsUser");
         dispatch({ type: "logout" });
       });
   }, []);
