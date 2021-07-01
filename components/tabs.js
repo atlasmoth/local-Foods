@@ -21,10 +21,7 @@ export default function Tabs({ items, place }) {
           <div key={i.name + Math.random() * Math.random()}>
             <div className="tab">
               <div className="tab-image">
-                <img
-                  src="https://via.placeholder.com/70/eee/fd6b0"
-                  alt="Dummy"
-                />
+                <img src={i.image} alt="Dummy" />
               </div>
               <div className="tab-desc">
                 <span>{i.name}</span>

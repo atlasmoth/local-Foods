@@ -13,17 +13,14 @@ export default function Orders({ orders }) {
             ":" +
             i.price_data.product_data.metadata.time
         );
-
+        const { days, hours } = getTimeRemaining(orderDate);
         return (
           <div
             key={i.price_data.product_data.name + Math.random() * Math.random()}
           >
             <div className="tab">
               <div className="tab-image">
-                <img
-                  src="https://via.placeholder.com/70/eee/fd6b0"
-                  alt="Dummy"
-                />
+                <img src={i.price_data.product_data.images[0]} alt="Dummy" />
               </div>
               <div className="tab-desc">
                 <span>
@@ -42,7 +39,9 @@ export default function Orders({ orders }) {
                 </span>
                 <span>
                   <small>
-                    {orderDate.getTime() > Date.now() ? "ongoing" : "done"}
+                    {orderDate.getTime() > Date.now()
+                      ? `In ${days} days, ${hours} hours`
+                      : `${-days}days, ${-hours} hours ago`}
                   </small>
                 </span>
               </div>
@@ -91,7 +90,7 @@ export async function getServerSideProps(ctx) {
           },
         },
         {
-          $sort: { lastModified: -1 },
+          $sort: { date: -1 },
         },
       ])
       .toArray();
@@ -121,5 +120,3 @@ function getTimeRemaining(endtime) {
     seconds,
   };
 }
-
-console.log(getTimeRemaining(new Date()));

@@ -44,27 +44,36 @@ export default function UserApp({ items, orders }) {
             ":" +
             i.price_data.product_data.metadata.time
         );
-
+        const { days, hours } = getTimeRemaining(orderDate);
         return (
           <div
             key={i.price_data.product_data.name + Math.random() * Math.random()}
           >
             <div className="tab">
               <div className="tab-image">
-                <img
-                  src="https://via.placeholder.com/70/eee/fd6b0"
-                  alt="Dummy"
-                />
+                <img src={i.price_data.product_data.images[0]} alt="Dummy" />
               </div>
               <div className="tab-desc">
-                <span>{dataName[0]}</span>
-                <span>{dataName[1]}</span>
+                <span>
+                  <small>{dataName[0]}</small>
+                </span>
+                <span>
+                  <small>{dataName[1]}</small>
+                </span>
+
                 <span
                   style={{
                     color: "#fd6b01",
                   }}
                 >
                   &#x20A6;{i.price_data.unit_amount / 100}
+                </span>
+                <span>
+                  <small>
+                    {orderDate.getTime() > Date.now()
+                      ? `In ${days} days, ${hours} hours`
+                      : `${-days}days, ${-hours} hours ago`}
+                  </small>
                 </span>
               </div>
               <div className="tab-range">
@@ -157,7 +166,7 @@ export async function getServerSideProps(ctx) {
           },
         },
         {
-          $sort: { lastModified: -1 },
+          $sort: { date: -1 },
         },
         { $limit: 5 },
       ])
@@ -176,4 +185,19 @@ export async function getServerSideProps(ctx) {
       },
     };
   }
+}
+
+function getTimeRemaining(endtime) {
+  const total = Date.parse(endtime) - Date.parse(new Date());
+  const seconds = Math.floor((total / 1000) % 60);
+  const minutes = Math.floor((total / 1000 / 60) % 60);
+  const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+  const days = Math.floor(total / (1000 * 60 * 60 * 24));
+
+  return {
+    days,
+    hours,
+    minutes,
+    seconds,
+  };
 }

@@ -47,7 +47,7 @@ export default function Checkout() {
                 <div className="tab">
                   <div className="tab-image">
                     <img
-                      src="https://via.placeholder.com/70/eee/fd6b0"
+                      src={i.price_data.product_data.images[0]}
                       alt="Dummy"
                     />
                   </div>
