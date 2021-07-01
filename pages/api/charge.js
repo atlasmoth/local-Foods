@@ -16,8 +16,9 @@ async function checkout(req, res) {
       payment_method_types: ["card"],
       line_items: items,
       mode: "payment",
-      success_url: "http://localhost:3000/checkout?id=" + data.insertedId,
-      cancel_url: "http://localhost:3000/checkout",
+      success_url:
+        "https://local-foods.vercel.app/checkout?id=" + data.insertedId,
+      cancel_url: "https://local-foods.vercel.app/checkout",
     });
 
     res.json({ id: session.id });
