@@ -1,4 +1,4 @@
-# Libre Docs
+# Local Foods
 
 #### Fullstack app to find and book tables at restaurants near you using next.js , mongo db and stripe, db seeded with zomato data from kaggle
 
