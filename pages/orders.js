@@ -1,7 +1,6 @@
 import Navbar from "./../components/navbar";
 import { connectToDatabase } from "./../utils/db";
 import Cookie from "next-cookies";
-import moment from "moment";
 
 export default function Orders({ orders }) {
   return (
@@ -43,9 +42,7 @@ export default function Orders({ orders }) {
                 </span>
                 <span>
                   <small>
-                    {orderDate.getTime() > Date.now()
-                      ? moment(orderDate).startOf("date").fromNow()
-                      : moment(orderDate).startOf("date").fromNow()}
+                    {orderDate.getTime() > Date.now() ? "ongoing" : "done"}
                   </small>
                 </span>
               </div>
@@ -109,3 +106,20 @@ export async function getServerSideProps(ctx) {
     };
   }
 }
+
+function getTimeRemaining(endtime) {
+  const total = Date.parse(endtime) - Date.parse(new Date());
+  const seconds = Math.floor((total / 1000) % 60);
+  const minutes = Math.floor((total / 1000 / 60) % 60);
+  const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+  const days = Math.floor(total / (1000 * 60 * 60 * 24));
+
+  return {
+    days,
+    hours,
+    minutes,
+    seconds,
+  };
+}
+
+console.log(getTimeRemaining(new Date()));
