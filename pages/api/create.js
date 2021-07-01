@@ -6,46 +6,32 @@ import cookie from "cookie";
 import { ObjectId } from "mongodb";
 
 const handler = nc();
-async function createUser(req, res) {
+async function getUser(req, res) {
   const oldToken = req.cookies["foodsToken"];
-  console.log(oldToken);
-  if (oldToken) {
+  try {
     const decoded = jwt.verify(oldToken, process.env.JWT_SECRET);
-    if (!decoded) {
-      res.setHeader(
-        "Set-Cookie",
-        cookie.serialize("foodsToken", "", {
-          httpOnly: true,
-          secure: process.env.NODE_ENV !== "development",
-          maxAge: -1,
-          sameSite: "strict",
-        })
-      );
+    const { db } = await connectToDatabase();
+    const oldUser = await db
+      .collection("users")
+      .findOne({ _id: ObjectId(decoded.id) });
+    if (!oldUser) {
+      return res.status(400).send({ success: false, message: error.message });
     }
-    if (decoded) {
-      try {
-        const { db } = await connectToDatabase();
-        const oldUser = await db
-          .collection("users")
-          .findOne({ _id: ObjectId(decoded.id) });
-        if (oldUser) {
-          return res.send({
-            success: true,
-            user: {
-              _id: oldUser._id,
-              email: oldUser.email,
-              latitude: oldUser.latitude,
-              longitude: oldUser.longitude,
-            },
-          });
-        }
-      } catch (error) {
-        console.log(error);
-
-        return res.status(400).send({ success: false, message: error.message });
-      }
-    }
+    return res.send({
+      success: true,
+      user: {
+        _id: oldUser._id,
+        email: oldUser.email,
+        latitude: oldUser.latitude,
+        longitude: oldUser.longitude,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ success: false, message: error.message });
   }
+}
+async function createUser(req, res) {
   const { password, email, latitude, longitude } = req.body;
   const hash = bcrypt.hashSync(password, 10);
   try {
@@ -81,5 +67,5 @@ async function createUser(req, res) {
     res.status(400).send({ success: false, message: error.message });
   }
 }
-handler.post(createUser);
+handler.post(createUser).get(getUser);
 export default handler;

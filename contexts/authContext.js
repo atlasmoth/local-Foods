@@ -21,7 +21,7 @@ function Auth({ children }) {
   const [state, dispatch] = useReducer(reducer, { user: null, auth: false });
   useEffect(() => {
     axios
-      .post("/api/create", {})
+      .get("/api/create", {})
       .then((res) => {
         const {
           data: { user },
@@ -29,7 +29,9 @@ function Auth({ children }) {
 
         dispatch({ type: "login", user });
       })
-      .catch(console.log);
+      .catch(() => {
+        dispatch({ type: "logout" });
+      });
   }, []);
   return (
     <AuthContext.Provider value={{ state, dispatch }}>
