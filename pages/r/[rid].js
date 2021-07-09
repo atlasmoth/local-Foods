@@ -6,6 +6,7 @@ import Tabs from "../../components/tabs";
 export default function Restaurant({ data }) {
   const keys = Array.from(new Set(Object.keys(data.menu)));
   const [current, setCurrent] = useState(keys[0]);
+
   return (
     <div className="box">
       <Navbar title={data.name} />
