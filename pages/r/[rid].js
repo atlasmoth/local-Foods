@@ -2,8 +2,9 @@ import { useState } from "react";
 import Navbar from "../../components/navbar";
 import { connectToDatabase } from "../../utils/db";
 import Tabs from "../../components/tabs";
-import Map from "./../../components/map";
+import dynamic from "next/dynamic";
 
+const Map = dynamic(() => import("./../../components/map"), { ssr: false });
 export default function Restaurant({ data }) {
   const keys = Array.from(new Set(Object.keys(data.menu)));
   const [current, setCurrent] = useState(keys[0]);
