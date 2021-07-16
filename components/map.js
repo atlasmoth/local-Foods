@@ -17,7 +17,7 @@ const Map = ({ data }) => {
   );
 
   return (
-    <div style={{ height: "50vh" }} className="map">
+    <div style={{ height: "60vh" }} className="map">
       <MapGL
         ref={mapRef}
         width="100%"
