@@ -1,61 +1,46 @@
 import React, { useEffect, useRef } from "react";
+import mapboxgl from "!mapbox-gl";
 import Cookie from "js-cookie";
+import "mapbox-gl/dist/mapbox-gl.css";
 
-const MAPBOX_TOKEN =
+mapboxgl.accessToken =
   "pk.eyJ1IjoiYmlnZWUiLCJhIjoiY2syYTcyYnRsM242czNjbXZkdmtwcWRlMCJ9.817UiaB2N2ZXxL3q29zxIA";
 
 const Map = ({ data }) => {
   const mapRef = useRef();
+  const map = useRef();
+
   useEffect(() => {
-    new mapboxgl.Map({
-      container: "map", // container ID
-      style: "mapbox://styles/mapbox/streets-v11", // style URL
-      center: [-74.5, 40], // starting position [lng, lat]
-      zoom: 9, // starting zoom
+    map.current = new mapboxgl.Map({
+      container: map.current,
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [
+        JSON.parse(Cookie.get("foodsUser")).longitude,
+        JSON.parse(Cookie.get("foodsUser")).latitude,
+      ],
+      zoom: 2,
     });
+    var directions = new MapboxDirections({
+      accessToken:
+        "pk.eyJ1IjoiYmlnZWUiLCJhIjoiY2syYTcyYnRsM242czNjbXZkdmtwcWRlMCJ9.817UiaB2N2ZXxL3q29zxIA",
+      unit: "metric",
+      profile: "mapbox/driving",
+      alternatives: false,
+      geometries: "geojson",
+      controls: { instructions: true },
+    });
+    directions.setOrigin([
+      JSON.parse(Cookie.get("foodsUser")).longitude,
+      JSON.parse(Cookie.get("foodsUser")).latitude,
+    ]);
+
+    directions.setDestination([Number(data.longitude), Number(data.latitude)]);
+    map.current.addControl(directions, "bottom-right");
   }, []);
 
   return (
-    <div style={{ height: "60vh" }} className="map">
-      {/* <div id="map">
-
-      </div>
-      <MapGL
-        ref={mapRef}
-        width="100%"
-        height="100%"
-        latitude={JSON.parse(Cookie.get("foodsUser")).latitude}
-        longitude={JSON.parse(Cookie.get("foodsUser")).longitude}
-        zoom={1}
-        mapboxApiAccessToken={MAPBOX_TOKEN}
-        scrollZoom={true}
-        onLoad={(e) => {
-          var directions = new MapboxDirections({
-            accessToken: MAPBOX_TOKEN,
-            unit: "metric",
-            profile: "mapbox/driving",
-            alternatives: false,
-            geometries: "geojson",
-            controls: { instructions: true },
-          });
-          directions.setOrigin([
-            JSON.parse(Cookie.get("foodsUser")).longitude,
-            JSON.parse(Cookie.get("foodsUser")).latitude,
-          ]);
-
-          directions.setDestination([
-            Number(data.longitude),
-            Number(data.latitude),
-          ]);
-          e.target.addControl(directions, "bottom-right");
-        }}
-      >
-        <Geocoder
-          mapRef={mapRef}
-          mapboxApiAccessToken={MAPBOX_TOKEN}
-          position="top-right"
-        />
-      </MapGL> */}
+    <div style={{ height: "60vh" }} className="map" ref={map}>
+      <div id="map"></div>
     </div>
   );
 };
