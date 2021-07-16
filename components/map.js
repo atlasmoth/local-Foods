@@ -1,9 +1,4 @@
-import "mapbox-gl/dist/mapbox-gl.css";
-import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
-import React, { useRef, useCallback } from "react";
-
-import MapGL from "react-map-gl";
-import Geocoder from "react-map-gl-geocoder";
+import React, { useEffect, useRef } from "react";
 import Cookie from "js-cookie";
 
 const MAPBOX_TOKEN =
@@ -11,13 +6,20 @@ const MAPBOX_TOKEN =
 
 const Map = ({ data }) => {
   const mapRef = useRef();
-  const handleViewportChange = useCallback(
-    (newViewport) => setViewport(newViewport),
-    []
-  );
+  useEffect(() => {
+    new mapboxgl.Map({
+      container: "map", // container ID
+      style: "mapbox://styles/mapbox/streets-v11", // style URL
+      center: [-74.5, 40], // starting position [lng, lat]
+      zoom: 9, // starting zoom
+    });
+  }, []);
 
   return (
     <div style={{ height: "60vh" }} className="map">
+      {/* <div id="map">
+
+      </div>
       <MapGL
         ref={mapRef}
         width="100%"
@@ -53,7 +55,7 @@ const Map = ({ data }) => {
           mapboxApiAccessToken={MAPBOX_TOKEN}
           position="top-right"
         />
-      </MapGL>
+      </MapGL> */}
     </div>
   );
 };
