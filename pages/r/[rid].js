@@ -51,7 +51,7 @@ export default function Restaurant({ data }) {
           </p>
         </div>
       </div>
-      <Map />
+      <Map data={data["data-location"]} />
       <div
         className="slider"
         style={{
