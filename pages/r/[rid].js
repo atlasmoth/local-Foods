@@ -2,11 +2,16 @@ import { useState } from "react";
 import Navbar from "../../components/navbar";
 import { connectToDatabase } from "../../utils/db";
 import Tabs from "../../components/tabs";
+import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 export default function Restaurant({ data }) {
   const keys = Array.from(new Set(Object.keys(data.menu)));
   const [current, setCurrent] = useState(keys[0]);
-
+  const Map = ReactMapboxGl({
+    accessToken:
+      "pk.eyJ1IjoiYmlnZWUiLCJhIjoiY2syYTcyYnRsM242czNjbXZkdmtwcWRlMCJ9.817UiaB2N2ZXxL3q29zxIA",
+  });
   return (
     <div className="box">
       <Navbar title={data.name} />
@@ -49,6 +54,23 @@ export default function Restaurant({ data }) {
             <span>({data.user_rating.votes})</span>
           </p>
         </div>
+      </div>
+      <div className="map">
+        <Map
+          style="mapbox://styles/mapbox/streets-v9"
+          containerStyle={{
+            height: "100vh",
+            width: "100vw",
+          }}
+        >
+          <Layer
+            type="symbol"
+            id="marker"
+            layout={{ "icon-image": "marker-15" }}
+          >
+            <Feature coordinates={[-0.481747846041145, 51.3233379650232]} />
+          </Layer>
+        </Map>
       </div>
       <div
         className="slider"

@@ -103,7 +103,6 @@ function Tab({ i, updateState }) {
               type="checkbox"
               name="favorite"
               id="favorite"
-              // onChange={setChecked((s) => !s)}
               disabled={booked}
               checked={checked}
               onChange={(e) => setChecked((s) => !s)}
