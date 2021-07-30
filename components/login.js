@@ -26,7 +26,7 @@ export default function login() {
     <div className="signup-container">
       <form onSubmit={handleSubmit}>
         <header>
-          <h2>Logo goes here</h2>
+          <h2>Local Foods</h2>
         </header>
         <div>
           <label htmlFor="email">Email</label>
