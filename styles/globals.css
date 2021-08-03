@@ -239,23 +239,22 @@ a {
 }
 
 /* date */
-.date form .time {
-  display: flex;
-  align-items: center;
+.date form .time input,
+.date form .time select {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 10px 5px;
+  line-height: 1.2rem;
 }
-.date form .time span {
-  padding: 1rem;
-}
-.date form .time span:first-of-type {
-  margin-right: auto;
-}
+
 .date form button {
   border: none;
   background-color: var(--base-orange);
   color: var(--base-light);
   padding: 0.7rem 2rem;
   border-radius: 5px;
-  margin: 10px 20px;
+  margin: 10px 20px 10px 0px;
+  cursor: pointer;
 }
 
 /* order button */

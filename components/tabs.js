@@ -2,6 +2,11 @@ import { useRef, useState } from "react";
 import { useCart } from "./../contexts/cartContext";
 import { useAuth } from "./../contexts/authContext";
 
+const dates = [];
+for (let x = 9; x < 22; x++) {
+  dates.push(`${x}:00`, `${x}:30`);
+}
+
 export default function Tabs({ items, place }) {
   const cartContext = useCart();
   const authContext = useAuth();
@@ -38,15 +43,6 @@ export default function Tabs({ items, place }) {
       ))}
     </div>
   );
-}
-
-function splitDate() {
-  const [a, b] = new Date()
-    .toISOString()
-    .split("T")[1]
-    .split(".")[0]
-    .split(":");
-  return `${a}:${b}`;
 }
 
 function Tab({ i, updateState }) {
@@ -116,6 +112,7 @@ function Tab({ i, updateState }) {
             onSubmit={(e) => {
               e.preventDefault();
               const formObj = Object.fromEntries(new FormData(e.target));
+
               updateState(i, formObj, val);
 
               setChecked(false);
@@ -123,7 +120,7 @@ function Tab({ i, updateState }) {
             }}
           >
             <div className="time">
-              <span>
+              <div>
                 <input
                   type="date"
                   name="book"
@@ -137,20 +134,14 @@ function Tab({ i, updateState }) {
                   onChange={(e) => setCurrDate(e.target.value)}
                   required
                 />
-              </span>
-              <span>
-                <input
-                  type="time"
-                  name="time"
-                  min={
-                    dateRef.current.toISOString().split("T")[0] === currDate
-                      ? splitDate()
-                      : "09:00"
-                  }
-                  max="21:00"
-                  required
-                />
-              </span>
+              </div>
+              <select name="time" id="time">
+                {dates.map((d) => (
+                  <option value={d} key={d}>
+                    {d}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
               <span>
