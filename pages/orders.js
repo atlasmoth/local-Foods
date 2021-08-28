@@ -13,7 +13,7 @@ export default function Orders({ orders }) {
             ":" +
             i.price_data.product_data.metadata.time
         );
-        const { days, hours } = getTimeRemaining(orderDate);
+
         return (
           <div
             key={i.price_data.product_data.name + Math.random() * Math.random()}
@@ -39,9 +39,10 @@ export default function Orders({ orders }) {
                 </span>
                 <span>
                   <small>
-                    {orderDate.getTime() > Date.now()
-                      ? `In ${days} days, ${hours} hours`
-                      : `${-days}days, ${-hours} hours ago`}
+                    {new Intl.DateTimeFormat("en-NG", {
+                      dateStyle: "long",
+                      timeStyle: "short",
+                    }).format(orderDate)}
                   </small>
                 </span>
               </div>
@@ -104,19 +105,4 @@ export async function getServerSideProps(ctx) {
       props: {},
     };
   }
-}
-
-function getTimeRemaining(endtime) {
-  const total = Date.parse(endtime) - Date.parse(new Date());
-  const seconds = Math.floor((total / 1000) % 60);
-  const minutes = Math.floor((total / 1000 / 60) % 60);
-  const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
-  const days = Math.floor(total / (1000 * 60 * 60 * 24));
-
-  return {
-    days,
-    hours,
-    minutes,
-    seconds,
-  };
 }
