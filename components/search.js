@@ -4,11 +4,13 @@ export default function Search({ load }) {
   const [search, setSearch] = useState("");
   async function getResults(e) {
     e.preventDefault();
-    const {
-      data: { docs },
-    } = await axios.get(`/api/search?term=${search}`);
+    if (search.trim().length > 0) {
+      const {
+        data: { docs },
+      } = await axios.get(`/api/search?term=${search}`);
 
-    load(docs);
+      load(docs);
+    }
   }
   return (
     <div className="search-box">

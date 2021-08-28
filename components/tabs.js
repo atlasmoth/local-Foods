@@ -66,7 +66,10 @@ function Tab({ i, updateState }) {
               color: "#fd6b01",
             }}
           >
-            &#x20A6;{i.price}
+            {new Intl.NumberFormat("en-NG", {
+              style: "currency",
+              currency: "NGN",
+            }).format(i.price, { compactDisplay: "short" })}
           </span>
         </div>
         <div className="tab-range">
@@ -90,7 +93,11 @@ function Tab({ i, updateState }) {
               color: "#fd6b01",
             }}
           >
-            &#x20A6; {parseFloat(val) * i.price} ({val})
+            {new Intl.NumberFormat("en-NG", {
+              style: "currency",
+              currency: "NGN",
+            }).format(parseFloat(val) * i.price, { compactDisplay: "short" })}
+            ({val})
           </span>
         </div>
         <div className="tab-check">

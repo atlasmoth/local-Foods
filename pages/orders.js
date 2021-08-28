@@ -35,7 +35,12 @@ export default function Orders({ orders }) {
                     color: "#fd6b01",
                   }}
                 >
-                  &#x20A6;{i.price_data.unit_amount / 100}
+                  {new Intl.NumberFormat("en-NG", {
+                    style: "currency",
+                    currency: "NGN",
+                  }).format(i.price_data.unit_amount / 100, {
+                    compactDisplay: "short",
+                  })}
                 </span>
                 <span>
                   <small>
@@ -52,8 +57,13 @@ export default function Orders({ orders }) {
                     color: "#fd6b01",
                   }}
                 >
-                  &#x20A6; {(i.price_data.unit_amount * i.quantity) / 100} (
-                  {i.quantity})
+                  {new Intl.NumberFormat("en-NG", {
+                    style: "currency",
+                    currency: "NGN",
+                  }).format(i.price_data.unit_amount / 100, {
+                    compactDisplay: "short",
+                  })}{" "}
+                  ({i.quantity})
                 </span>
               </div>
               <div className="tab-check">

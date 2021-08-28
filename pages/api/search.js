@@ -1,4 +1,3 @@
-import nc from "next-connect";
 import { connectToDatabase } from "../../utils/db";
 
 async function Search(req, res) {
@@ -8,30 +7,22 @@ async function Search(req, res) {
     const { db } = await connectToDatabase();
     const docs = await db
       .collection("restaurants")
-      .aggregate([
-        {
-          $search: {
-            text: {
-              path: { wildcard: "*" },
-              query: term,
+      .find({
+        $or: [
+          { name: new RegExp(term, "i", "g") },
+          {
+            menu: {
+              $elemMatch: { $elemMatch: { name: new RegExp(term, "i", "g") } },
             },
           },
-        },
-        {
-          $limit: 100,
-        },
-        {
-          $project: {
-            menu: false,
-          },
-        },
-      ])
+        ],
+      })
       .toArray();
     res.send({ success: true, docs });
   } catch (error) {
+    console.log(error);
     res.status(400).send({ success: false, message: error.message });
   }
 }
-const handler = nc();
-handler.get(Search);
-export default handler;
+
+export default Search;
